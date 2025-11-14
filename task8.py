@@ -1,21 +1,16 @@
-import sys
-counter = []
+# Counts unique numbers in a string of numbers. Set usage.
 
-def checker(inp):
+def main():
+    input_str = int(input().strip())
+    result = unique(input_str)
+    print(result)
 
-    try:
-        return int(inp)
-    except ValueError:
-        sys.stdout.write("nonono")
-        return None
-    
-amount = sys.stdin.readline().strip()
-am_checked = checker(amount)
+def unique(input_str):
+    counter = set()
+    for _ in range(input_str):
+        num = input().strip()
+        counter.add(num)
+    return len(counter)
 
-if am_checked is not None:
-    for i in range(0, am_checked):
-        num = sys.stdin.readline().strip()
-        if num not in counter:
-            counter.append(num)
-
-print(f"unique: {len(counter)}")
+if __name__ == "__main__":
+    main()
