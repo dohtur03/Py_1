@@ -1,54 +1,33 @@
-import numpy as np
-x_size = 30
-y_size = 10
+# Finds the maximum sum of numbers in a matrix of numbers. Move only right and down along the matrix.
 
-field = np.random.randint(1, 10, size = (y_size, x_size))
-checker = np.zeros((y_size, x_size), dtype = int)
-mover = np.full((y_size, x_size), '!', dtype=str)   
+def main():
+    field, saver, y, x = mapper()
+    result = analyzer(field, saver, y, x)
+    print(result)
 
+def mapper():
+# Input number of rows and columns + rows of numbers 
+    y, x = map(int, input().split())
+    field = [list(map(int, input().split())) for _ in range(y)]
+    
+# Generate a matrix to save results of the field's analysis
+    saver = [[0] * x for _ in range(y)]
+    saver[0][0] = field[0][0]
+    return (field, saver, y, x)
+    
+# Fill the generated matrix with results of calculations (max sum and direction)
+def analyzer(field, saver, y, x):    
+    for col in range(1, x):
+        saver[0][col] = saver[0][col - 1] + field[0][col]
+    
+    for row in range(1, y):
+        saver[row][0] = saver[row - 1][0] + field[row][0]
+    
+    for row in range(1, y):
+        for col in range(1, x):
+            saver[row][col] = field[row][col] + max(saver[row - 1][col], saver[row][col - 1])
+    
+    return (saver[y - 1][x - 1])
 
-#field = [[1,1,1,1],
-#         [1,1,1,1],
-#         [1,9,1,1]]
-
-#checker = [[0,0,0,0],
-#           [0,0,0,0],
-#           [0,0,0,0]]
-
-#mover = [[0,0,0,0],
-#         [0,0,0,0],
-#         [0,0,0,0]]
-
-x_max = len(field[0]) - 1
-y_max = len(field) - 1
-
-x = x_max
-y = y_max
-result = 0
-
-for hor in range(x_max, -1, -1):
-    for ver in range (y_max, -1, -1):
-        if (ver + 1 > y_max and hor + 1 <= x_max):
-            checker[ver][hor] = (field[ver][hor] + checker[ver][hor + 1])
-            mover[ver][hor] = ">"
-        elif (ver + 1 <= y_max and hor + 1 > x_max):
-            checker[ver][hor] = (field[ver + 1][hor] + checker[ver + 1][hor])
-            mover[ver][hor] = "V"
-        elif (ver + 1 <= y_max and hor + 1 <= x_max):
-            if (checker[ver][hor] + field[ver][hor + 1] + checker[ver][hor + 1]) > (checker[ver][hor] + field[ver + 1][hor] + checker[ver + 1][hor]):
-                checker[ver][hor] = (field[ver][hor + 1] + checker[ver][hor + 1])
-                mover[ver][hor] = ">"
-            else: 
-                checker[ver][hor] = (field[ver + 1][hor] + checker[ver + 1][hor])
-                mover[ver][hor] = "V"
-
-for rows in field:
-    print(*rows)
-print("\n")
-for rows in checker:
-    print(*rows)
-print("\n")
-for rows in mover:
-    print(*rows)
-
-
+if __name__ == "__main__":
+    main()
