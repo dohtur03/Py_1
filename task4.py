@@ -1,15 +1,35 @@
-num = 1
-lines = [[num]]
-for rows in range(1, 20):
-    line = []
-    for clmns in range(rows + 1):
-        if 0 < clmns < len(lines[rows - 1]):
-            num = lines[rows - 1][clmns] + lines[rows - 1][clmns - 1]
-        else:
-            num = 1
-        line.append(num)
-    lines.append(line)
+# Output N first rows of Pascal's triangle by the given number N of rows
 
-for lns in lines:
-    print(*lns)
-        
+def main():
+    num = check_int()
+    if num <= 0:
+        print("Input must be a single positive int.")
+    else:
+        triangler(num)
+
+# Check input for positive int
+def check_int():
+    try:
+        num = int(input())
+    except ValueError:
+        num = -1
+    return num
+
+# Generate N raws of Pascal's trianlgle
+def triangler(num): 
+    lines = [[1]]
+    for row in range(1, num):
+        line = []
+        for col in range(row + 1):
+            if 0 < col < len(lines[row - 1]):
+                val = lines[row - 1][col] + lines[row - 1][col - 1]
+            else:
+                val = 1
+            line.append(val)
+        lines.append(line)
+
+    for line in lines:
+        print(*line)
+       
+if __name__ == "__main__":
+    main()
